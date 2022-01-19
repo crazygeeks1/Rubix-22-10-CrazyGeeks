@@ -20,7 +20,7 @@ export class HomeComponent implements OnInit {
 
     htmlString: string = "<div><h1>HtmlView demo</h1><h2>in NativeScript App</h2></div>";
 
-    Category: { Item: string, Amount: string, Total: string}[] = [
+    Category: { Item: string, Amount: string, Total: string }[] = [
         { Item: "Category", Amount: "Amount", Total: "Total" },
         { Item: "Lunch", Amount: "500", Total: "" },
         { Item: "Transport", Amount: "150", Total: "" },
@@ -39,44 +39,44 @@ export class HomeComponent implements OnInit {
 
     ngOnInit(): void {
     }
-    
+
     onItemTap(args: ItemEventData): void {
         console.log('Item with index: ' + args.index + ' tapped');
     }
 
-    navigateAdd(){
+    navigateAdd() {
 
         var ocr = new OCR();
 
-        if(camera.isAvailable) {
-        camera.requestPermissions().then(
-            function success() {
-                camera.takePicture().
-                then((imageAsset) => {
-                    console.log("Result is an image asset instance");
-                        
-                    console.log(imageAsset)
-                    ImageSource.fromAsset(imageAsset).then((success: ImageSource) => {
-                            ocr.retrieveText({
-                                image: success,
-                                onProgress: (percentage: number ) => {
-                                    console.log(`Decoding progress: ${percentage}%`);
-                                }
-                            }).then((result: RetrieveTextResult) => {
-                                
-                                console.log(`Result: ${result.text}`);
-                                
-                            }, (error) => { 
-                                console.log(`Error: `,error);
-                            });
-                    })
-                }).catch((err) => {
-                    console.log("Error Image-> " + err.message);
-                });
-            }, 
-            function failure() {
+        if (camera.isAvailable) {
+            camera.requestPermissions().then(
+                function success() {
+                    camera.takePicture().
+                        then((imageAsset) => {
+                            console.log("Result is an image asset instance");
 
-        });
+                            console.log(imageAsset)
+                            ImageSource.fromAsset(imageAsset).then((success: ImageSource) => {
+                                ocr.retrieveText({
+                                    image: success,
+                                    onProgress: (percentage: number) => {
+                                        console.log(`Decoding progress: ${percentage}%`);
+                                    }
+                                }).then((result: RetrieveTextResult) => {
+
+                                    console.log(`Result: ${result.text}`);
+
+                                }, (error) => {
+                                    console.log(`Error: `, error);
+                                });
+                            })
+                        }).catch((err) => {
+                            console.log("Error Image-> " + err.message);
+                        });
+                },
+                function failure() {
+
+                });
         } else {
             console.log("Camera Not Available!!");
         }
