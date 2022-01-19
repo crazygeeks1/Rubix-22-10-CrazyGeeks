@@ -1,0 +1,92 @@
+<ActionBar title="Cashflow">
+</ActionBar>
+
+<StackLayout verticalAlignment="bottom">
+    <BottomNavigation>
+        <TabStrip>
+            <TabStripItem>
+                <Label text="Transaction"></Label>
+                <Image src="res://home"></Image>
+            </TabStripItem>
+            <TabStripItem>
+                <Label text="Category"></Label>
+                <Image src="res://settings"></Image>
+            </TabStripItem>
+            <TabStripItem>
+                <Label text="Statistcs"></Label>
+                <Image src="res://search"></Image>
+            </TabStripItem>
+        </TabStrip>
+
+        <TabContentItem>
+            <StackLayout>
+                <Tabs>
+                    <TabStrip>
+                        <TabStripItem>
+                            <Label text="Daily"></Label>
+                        </TabStripItem>
+                        <TabStripItem>
+                            <Label text="Weekly"></Label>
+                        </TabStripItem>
+                        <TabStripItem>
+                            <Label text="Monthly"></Label>
+                        </TabStripItem>
+                        <TabStripItem>
+                            <Label text="Total"></Label>
+                        </TabStripItem>
+                    </TabStrip>
+                    <TabContentItem>
+                        <GridLayout>
+
+                            <ListView [items]="Category" (itemTap)="onItemTap($event)" style="height:90%"
+                                marginBottom="100px">
+                                <ng-template let-Category="item">
+                                    <FlexboxLayout flexDirection="row">
+                                        <Image [src]="Category.imageSrc" class="thumb img-circle"></Image>
+                                        <Label [text]="Category.Item" class="t-12" verticalAlignment="center"
+                                            style="width: 50%"></Label>
+                                        <Label [text]="Category.Amount" class="t-12" verticalAlignment="center"
+                                            style="width: 50%"></Label>
+                                        <Label [text]="Category.Total" class="t-12" verticalAlignment="center"
+                                            style="width: 30%"></Label>
+
+                                    </FlexboxLayout>
+                                </ng-template>
+                            </ListView>
+                            <FlexboxLayout justifyContent="flex-end" width="100%" id="addButtonContainer" left="0">
+                                <Button class="add-button" row="0" col="1" text="+" (tap)="navigateAdd()"></Button>
+                            </FlexboxLayout>
+                        </GridLayout>
+
+                    </TabContentItem>
+                    <TabContentItem>
+                        <GridLayout>
+
+                        </GridLayout>
+                    </TabContentItem>
+                    <TabContentItem>
+                        <GridLayout>
+
+                        </GridLayout>
+                    </TabContentItem>
+                    <TabContentItem>
+                        <GridLayout verticalAlignment="Top">
+
+                        </GridLayout>
+                    </TabContentItem>
+                </Tabs>
+            </StackLayout>
+        </TabContentItem>
+        <TabContentItem>
+            <GridLayout verticalAlignment="center">
+
+            </GridLayout>
+        </TabContentItem>
+        <TabContentItem>
+            <GridLayout verticalAlignment="center">
+
+            </GridLayout>
+        </TabContentItem>
+    </BottomNavigation>
+
+</StackLayout>
