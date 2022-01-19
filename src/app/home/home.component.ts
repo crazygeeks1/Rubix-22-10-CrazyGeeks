@@ -3,6 +3,7 @@ import { Component, OnInit } from "@angular/core";
 import * as camera from "@nativescript/camera";
 import { OCR, RetrieveTextResult } from "nativescript-ocr";
 import { Image } from "tns-core-modules/ui/image";
+import { ImageSource } from "tns-core-modules";
 
 @Component({
     selector: "Home",
@@ -11,8 +12,6 @@ import { Image } from "tns-core-modules/ui/image";
     styleUrls: ["./home.component.css"]
 })
 export class HomeComponent implements OnInit {
-    
-    private ocr: OCR;
 
     listPickerCountries: Array<string> = ["Australia", "Belgium", "Bulgaria", "Canada", "Switzerland",
         "China", "Czech Republic", "Germany", "Spain", "Ethiopia", "Croatia", "Hungary",
@@ -35,7 +34,7 @@ export class HomeComponent implements OnInit {
     ];
 
     constructor() {
-        this.ocr = new OCR();
+
     }
 
     ngOnInit(): void {
@@ -47,28 +46,32 @@ export class HomeComponent implements OnInit {
 
     navigateAdd(){
 
+        var ocr = new OCR();
+
         if(camera.isAvailable) {
         camera.requestPermissions().then(
             function success() {
                 camera.takePicture().
                 then((imageAsset) => {
                     console.log("Result is an image asset instance");
-                    var img = new Image();
-                    img.src = imageAsset;
-                    this.ocr.retrieveText({
-                        image: img,
-                        onProgress: (percentage: number ) => {
-                            console.log(`Decoding progress: ${percentage}%`);
-                        }
-                    }).then((result: RetrieveTextResult) => {
                         
-                        console.log(`Result: ${result.text}`);
-                        
-                    }, (error: string) => {
-                        console.log(`Error: `,error);
+                    console.log(imageAsset)
+                    ImageSource.fromAsset(imageAsset).then((success: ImageSource) => {
+                            ocr.retrieveText({
+                                image: success,
+                                onProgress: (percentage: number ) => {
+                                    console.log(`Decoding progress: ${percentage}%`);
+                                }
+                            }).then((result: RetrieveTextResult) => {
+                                
+                                console.log(`Result: ${result.text}`);
+                                
+                            }, (error) => { 
+                                console.log(`Error: `,error);
+                            });
                     })
                 }).catch((err) => {
-                    console.log("Error -> " + err.message);
+                    console.log("Error Image-> " + err.message);
                 });
             }, 
             function failure() {
