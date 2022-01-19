@@ -1,6 +1,7 @@
 import { ItemEventData } from "tns-core-modules/ui/list-view"
 import { Component, OnInit } from "@angular/core";
 import * as camera from "@nativescript/camera";
+import { OCR, RetrieveTextResult } from "nativescript-ocr";
 import { Image } from "tns-core-modules/ui/image";
 
 @Component({
@@ -10,6 +11,8 @@ import { Image } from "tns-core-modules/ui/image";
     styleUrls: ["./home.component.css"]
 })
 export class HomeComponent implements OnInit {
+    
+    private ocr: OCR;
 
     listPickerCountries: Array<string> = ["Australia", "Belgium", "Bulgaria", "Canada", "Switzerland",
         "China", "Czech Republic", "Germany", "Spain", "Ethiopia", "Croatia", "Hungary",
@@ -32,6 +35,7 @@ export class HomeComponent implements OnInit {
     ];
 
     constructor() {
+        this.ocr = new OCR();
     }
 
     ngOnInit(): void {
@@ -49,8 +53,20 @@ export class HomeComponent implements OnInit {
                 camera.takePicture().
                 then((imageAsset) => {
                     console.log("Result is an image asset instance");
-                    var image = new Image();
-                    image.src = imageAsset;
+                    var img = new Image();
+                    img.src = imageAsset;
+                    this.ocr.retrieveText({
+                        image: img,
+                        onProgress: (percentage: number ) => {
+                            console.log(`Decoding progress: ${percentage}%`);
+                        }
+                    }).then((result: RetrieveTextResult) => {
+                        
+                        console.log(`Result: ${result.text}`);
+                        
+                    }, (error: string) => {
+                        console.log(`Error: `,error);
+                    })
                 }).catch((err) => {
                     console.log("Error -> " + err.message);
                 });
